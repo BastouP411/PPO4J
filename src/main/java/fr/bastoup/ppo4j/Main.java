@@ -14,10 +14,19 @@
  limitations under the License.
  =============================================================================*/
 
-package fr.bastoup.ppo4j.neuralnetwork.layer;
+package fr.bastoup.ppo4j;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public interface Layer {
-    INDArray activate(INDArray array);
+public class Main {
+    public static void main(String[] args) {
+        Logger logger = LoggerFactory.getLogger(Main.class);
+        INDArray line = Nd4j.ones(3);
+        INDArray mat = Nd4j.create(new float[] {1,1,1,0,1,1,0,0,1}, new int[] {3,3});
+        System.out.println(mat);
+        System.out.println(line.reshape(1,3).mmul(mat).reshape(3));
+    }
 }
