@@ -16,17 +16,24 @@
 
 package fr.bastoup.ppo4j;
 
+import fr.bastoup.ppo4j.neuralnetwork.NeuralNetwork;
+import fr.bastoup.ppo4j.neuralnetwork.WrongArraySizeException;
+import fr.bastoup.ppo4j.neuralnetwork.activation.RELU;
+import fr.bastoup.ppo4j.neuralnetwork.activation.Sigmoid;
+import fr.bastoup.ppo4j.neuralnetwork.layer.Linear;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Main {
-    public static void main(String[] args) {
-        Logger logger = LoggerFactory.getLogger(Main.class);
-        INDArray line = Nd4j.ones(3);
-        INDArray mat = Nd4j.create(new float[] {1,1,1,0,1,1,0,0,1}, new int[] {3,3});
-        System.out.println(mat);
-        System.out.println(line.reshape(1,3).mmul(mat).reshape(3));
+    public static void main(String[] args) throws WrongArraySizeException {
+        NeuralNetwork nn = new NeuralNetwork(
+                new Linear(10, 20, new Sigmoid()),
+                new Linear(20, 30, new RELU())
+        );
+        INDArray inp = Nd4j.rand(10);
+        System.out.println(inp);
+        INDArray outp = nn.forward(inp);
+        System.out.println(inp);
+        System.out.println(outp);
     }
 }

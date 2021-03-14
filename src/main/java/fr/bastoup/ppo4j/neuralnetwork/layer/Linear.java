@@ -36,9 +36,9 @@ public class Linear implements Layer {
         this.shape = new int[] {n,m};
 
         if(bias)
-            this.weights = Nd4j.rand(n, m);
-        else
             this.weights = Nd4j.rand(n + 1, m);
+        else
+            this.weights = Nd4j.rand(n, m);
 
         this.activation = activation;
     }
@@ -65,7 +65,7 @@ public class Linear implements Layer {
         return weights;
     }
 
-    public boolean isBias() {
+    public boolean getBias() {
         return bias;
     }
 
@@ -73,7 +73,15 @@ public class Linear implements Layer {
 
     @Override
     public INDArray activate(INDArray array) {
-        INDArray col = weights.mmul(array);
+        INDArray input;
+
+        if(bias){
+            input = Nd4j.prepend(array, 1, 1., 1);
+        } else {
+            input = array;
+        }
+
+        INDArray col = input.mmul(weights);
         return activation.apply(col);
     }
 }
